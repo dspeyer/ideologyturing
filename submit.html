@@ -16,5 +16,13 @@
       <select name=sincere><option>Yes</option><option>No</option></select><br><br>
       <input type=submit value="Answer" style="width:100%">
     </form>
+    <br><hr><br>
+    <span style="font-size:xx-small">
+    <form method=post action=do_remove>
+      <input type=hidden value="{{title}}" name=title>
+      Is this entire test a bad idea?  Enter <input name=password value=password style="font-size:xx-small"> 
+      and <input type=submit value="Remove it" style="font-size:xx-small">
+    </form>
+    </span>
   </body>
 </html>
