@@ -9,7 +9,7 @@
           var cnt=0;
           for (i in key) {
               document.getElementById('ans'+i).style.display='inline';
-              document.getElementById('v'+i).style.display='table-row';
+              document.getElementById('v'+i).style.visibility='visible';
               var ans=document.forms[0].elements['rb'+i].value;
               if (ans=='none') {
                   continue;
@@ -44,7 +44,7 @@
       <hr>
       <b style="font-size:smaller; font-family:sans">Probability this author was sincere:</b><br>
       <table><tr>
-          <td>10%</td>
+          <td style="text-align:right;">10%</td>
           <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=1></td>
           <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=2></td>
           <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=3></td>
@@ -58,10 +58,10 @@
           <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
           <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=none checked=checked> No answer</td>
           <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
-              <td rowspan=2><strong id=ans{{answer.key.urlsafe()}} style="display:none">Sincere: {{answer.sincere}}</strong>
+          <td rowspan=2><strong id=ans{{answer.key.urlsafe()}} style="display:none">{%if answer.sincere=='Yes'%}Real Opinion{%else%}Devil's Advocate{%endif%}</strong>
         </tr>
-        <tr id="v{{answer.key.urlsafe()}}" style="display:none">
-          <td></td>
+        <tr id="v{{answer.key.urlsafe()}}" style="visibility:hidden">
+          <td>Previous Votes:</td>
           <td>{{answer.votes[0]}}</td>
           <td>{{answer.votes[1]}}</td>
           <td>{{answer.votes[2]}}</td>
