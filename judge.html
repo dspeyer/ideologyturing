@@ -63,6 +63,7 @@
           <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=none checked=checked> No answer</td>
           <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
           <td rowspan=2><strong id=ans{{answer.key.urlsafe()}} style="display:none">{%if answer.sincere=='Yes'%}Real Opinion{%else%}Devil's Advocate{%endif%}</strong>
+          <td style="font-size:xx-small;color:#555;"><input type=checkbox name="remove{{answer.key.urlsafe()}}">Remove this entry</td>
         </tr>
         <tr id="v{{answer.key.urlsafe()}}" style="visibility:hidden">
           <td>Previous Votes:</td>
@@ -82,7 +83,8 @@
       key['{{answer.key.urlsafe()}}']='{{answer.sincere}}';
     </script>
     {% endfor %}
-    <strong>Your score is: <span id=score></span>%</strong>
+    <span style="font-size:xx-small;color:#555;">Password for removing entries: <input style="font-size:xx-small;" name=password></span><br>
+    <strong>Your score is: <span id=score></span>%</strong><br>
     <input type=submit value="Check Answers" onclick="grade()">
     <div id=others style="display:none;">Other people's scores: {{scores}}</div>
     </form>

@@ -1,3 +1,4 @@
+import hashlib
 import webapp2
 import jinja2
 import os
@@ -87,23 +88,26 @@ class DoJudge(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/plain'
         out=''
         for i in self.request.POST:
-            if i in ['score', 'title']:
-                continue
-            key = ndb.Key(urlsafe=i[2:])
-            ans = key.get()
-            if len(ans.votes)!=9:
-                ans.votes=[0,0,0,0,0,0,0,0,0]
-            if self.request.POST[i]!='none':
+            if i[:2]=='rb' and self.request.POST[i]!='none':
+                key = ndb.Key(urlsafe=i[2:])
+                ans = key.get()
+                if len(ans.votes)!=9:
+                    ans.votes=[0,0,0,0,0,0,0,0,0]
                 v = int(self.request.POST[i])-1
                 ans.votes[v]+=1
-            ans.put()
+                ans.put()
+            if (i[:6]=='remove' and self.request.POST[i]=='on' and
+                hashlib.sha224(self.request.get('password')).hexdigest()==
+                    '9f7b201f28a1ae7f08e576344dc73ee190ccf4894913335daae89f17'):
+                key = ndb.Key(urlsafe=i[6:])
+                key.delete()
         score=self.request.get('score')
         if score!='NaN':
             itt = ITT.query().filter(ITT.title==self.request.get('title')).fetch()[0]
             itt.scores.append(int(score))
             itt.scores.sort()
             itt.put()
-        self.response.write('Success '+score)
+        self.response.write('Success '+out)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
