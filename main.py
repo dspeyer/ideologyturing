@@ -17,6 +17,7 @@ JINJA_ENVIRONMENT.filters['markdown'] = lambda text: jinja2.Markup(md.convert(te
 class ITT(ndb.Model):
     title = ndb.StringProperty(indexed=True)
     prompt = ndb.TextProperty(indexed=False)
+    scores = ndb.IntegerProperty(repeated=True)
 
 class Answer(ndb.Model):
     title = ndb.StringProperty(indexed=True)
@@ -75,15 +76,19 @@ class JudgePage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         template = JINJA_ENVIRONMENT.get_template('judge.html')
         title = self.request.get('test')
-        prompt = ITT.query().filter(ITT.title==title).fetch()[0].prompt
+        itt = ITT.query().filter(ITT.title==title).fetch()[0]
         answers = Answer.query().filter(ITT.title==title).fetch()
         shuffle(answers)
-        self.response.write(template.render({'title':title, 'prompt':prompt, 'answers':answers}))
+        scores = [str(x) for x in itt.scores]
+        self.response.write(template.render({'title':title, 'prompt':itt.prompt, 'answers':answers, 'scores':', '.join(scores)}))
 
 class DoJudge(webapp2.RequestHandler):
     def post(self):
         self.response.headers['Content-Type'] = 'text/plain'
+        out=''
         for i in self.request.POST:
+            if i in ['score', 'title']:
+                continue
             key = ndb.Key(urlsafe=i[2:])
             ans = key.get()
             if len(ans.votes)!=9:
@@ -92,7 +97,13 @@ class DoJudge(webapp2.RequestHandler):
                 v = int(self.request.POST[i])-1
                 ans.votes[v]+=1
             ans.put()
-        self.response.write('Success')
+        score=self.request.get('score')
+        if score!='NaN':
+            itt = ITT.query().filter(ITT.title==self.request.get('title')).fetch()[0]
+            itt.scores.append(int(score))
+            itt.scores.sort()
+            itt.put()
+        self.response.write('Success '+score)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

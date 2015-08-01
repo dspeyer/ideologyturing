@@ -22,6 +22,8 @@
           }
           var score = Math.round(100 * Math.exp(sum/cnt));
           document.getElementById('score').innerHTML=score;
+          document.getElementById('others').style.display='block';
+          document.forms[0].elements['score'].value=score;
           setTimeout(function(){
               var inps = document.getElementsByTagName('input');
               for (var i=0; i<inps.length; i++) {
@@ -38,6 +40,8 @@
     <h1>{{title}}</h1>
     <div class=prompt>{{prompt|markdown}}</div>
     <form action=do_judge method=post target=frame>
+    <input type=hidden name=score value=NaN>
+    <input type=hidden name=title value="{{title}}">
     {% for answer in answers %}
     <div style="border:3px groove grey; margin:1em; padding:1em;">
       {{answer.answer|markdown}}
@@ -80,7 +84,8 @@
     {% endfor %}
     <strong>Your score is: <span id=score></span>%</strong>
     <input type=submit value="Check Answers" onclick="grade()">
+    <div id=others style="display:none;">Other people's scores: {{scores}}</div>
     </form>
-    <iframe name=frame style=display:none></iframe>
+    <iframe name=frame style=display:one></iframe>
   </body>
 </html>
