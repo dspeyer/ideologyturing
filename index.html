@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Ideological Turing Test</title>
+    <link rel=stylesheet href=static/style.css>
+  </head>
+  <body>
+    <h1>Ideological Turing Test</h1>
+    <div style="text-align:center;font-size:larger;"><a href=create>Create a Test</a></div>
+    <h2>Existing Tests:</h2>
+    <ul style="line-height:3">
+    {% for test in tests %}
+      <li><strong>{{test}}</strong>
+        <a href="submit?test={{test}}">Submit an Entry</a>
+        <a href="judge?test={{test}}">Judge Entries</a>
+    {% endfor %}
+    </ul>
+    </table>
+</html>

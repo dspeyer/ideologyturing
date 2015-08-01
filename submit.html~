@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Answer "{{title}}" -- Ideological Turing Test</title>
+    <link rel=stylesheet href=static/style.css>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <div style="width:90%">{{prompt}}
+    <form method=post action=do_create>
+      <strong>Answer</strong><br>
+      <textarea rows=5 style="width:100%" name=answer></textarea><br><br>
+      <strong>Is this your sincere opinion?</strong>
+      <select name=sincere><option>Yes</option><option>No</option></select><br><br>
+      <strong>Email Address</strong>
+      <input name=email><br><br>
+      <input type=submit value="Answer" style="width:100%">
+    </form>
+  </body>
+</html>

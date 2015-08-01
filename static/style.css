@@ -1,0 +1,33 @@
+body {
+    padding: 1em;
+    background: linear-gradient(45deg, #FDD, #DDF);
+}
+h1 {
+    text-align: center;
+}
+a {
+    text-align: center;
+    text-decoration: none;
+    background: rgb(200, 200, 255) none repeat scroll 0% 0%;
+    border-radius: 5px;
+    border: 3px outset red;
+    color: red;
+    margin: 10px;
+    padding: 5px;
+}
+strong {
+    font-size: x-large;
+}
+div.prompt {
+    width:90%;
+    text-align: justify; 
+    margin-left: 2%;
+    background: #fef;
+    padding: 5px;
+}
+div.prompt p:first-child { 
+    margin-top: 0;
+}
+div.prompt p:last-child { 
+    margin-bottom: 0;
+}

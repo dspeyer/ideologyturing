@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Answer "{{title}}" -- Ideological Turing Test</title>
+    <link rel=stylesheet href=static/style.css>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <div class=prompt>{{prompt|markdown}}</div>
+    <form method=post action=do_submit>
+      <input type=hidden name=title value="{{title}}">
+      <strong>Answer</strong><br>
+      <textarea rows=10 style="width:100%" name=answer></textarea><br><br>
+      <strong>Email Address</strong><br>
+      <input name=email style="width:100%"><br><br>
+      <strong>Is this your sincere opinion?</strong>
+      <select name=sincere><option>Yes</option><option>No</option></select><br><br>
+      <input type=submit value="Answer" style="width:100%">
+    </form>
+  </body>
+</html>

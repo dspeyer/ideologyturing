@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Judge {{title}} -- Ideological Turing Test</title>
+    <link rel=stylesheet href=static/style.css>
+    <script>
+      key={};
+      function grade(){
+          var sum=0;
+          var cnt=0;
+          for (i in key) {
+              document.getElementById('ans'+i).style.display='inline';
+              document.getElementById('v'+i).style.display='table-row';
+              var ans=document.forms[0].elements['rb'+i].value;
+              if (ans=='none') {
+                  continue;
+              }
+              if (key[i]=='No') {
+                  ans = 10 - ans;
+              }
+              sum += Math.log(ans/10);
+              cnt += 1;
+          }
+          var score = Math.round(100 * Math.exp(sum/cnt));
+          document.getElementById('score').innerHTML=score;
+          setTimeout(function(){
+              var inps = document.getElementsByTagName('input');
+              for (var i=0; i<inps.length; i++) {
+                  inps[i].disabled='disabled';
+              }
+            }, 1);                            
+      }
+    </script>
+    <style>
+      td { text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <div class=prompt>{{prompt|markdown}}</div>
+    <form action=do_judge method=post target=frame>
+    {% for answer in answers %}
+    <div style="border:3px groove grey; margin:1em; padding:1em;">
+      {{answer.answer|markdown}}
+      <hr>
+      <b style="font-size:smaller; font-family:sans">Probability this author was sincere:</b><br>
+      <table><tr>
+          <td>10%</td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=1></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=2></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=3></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=4></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=5></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=6></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=7></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=8></td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=9></td>
+          <td>90%</td>
+          <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+          <td><input type=radio name="rb{{answer.key.urlsafe()}}" value=none checked=checked> No answer</td>
+          <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+              <td rowspan=2><strong id=ans{{answer.key.urlsafe()}} style="display:none">Sincere: {{answer.sincere}}</strong>
+        </tr>
+        <tr id="v{{answer.key.urlsafe()}}" style="display:none">
+          <td></td>
+          <td>{{answer.votes[0]}}</td>
+          <td>{{answer.votes[1]}}</td>
+          <td>{{answer.votes[2]}}</td>
+          <td>{{answer.votes[3]}}</td>
+          <td>{{answer.votes[4]}}</td>
+          <td>{{answer.votes[5]}}</td>
+          <td>{{answer.votes[6]}}</td>
+          <td>{{answer.votes[7]}}</td>
+          <td>{{answer.votes[8]}}</td>
+        </tr>
+      </table>
+    </div>
+    <script>
+      key['{{answer.key.urlsafe()}}']='{{answer.sincere}}';
+    </script>
+    {% endfor %}
+    <strong>Your score is: <span id=score></span>%</strong>
+    <input type=submit value="Check Answers" onclick="grade()">
+    </form>
+    <iframe name=frame style=display:none></iframe>
+  </body>
+</html>
